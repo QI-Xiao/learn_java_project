@@ -1,7 +1,6 @@
 package org.example.repository;
 
 import org.example.model.Department;
-import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +17,11 @@ public class DepartmentJDBCDaoImpl implements IDepartmentDao{
     static final String DB_URL = "jdbc:postgresql://localhost:5431/training_db";
     static final String USER = "admin";
     static final String PASS = "Training123!";
+
+    @Override
+    public void save(Department department) {
+
+    }
 
     @Override
     public List<Department> getDepartments() {
@@ -77,5 +81,20 @@ public class DepartmentJDBCDaoImpl implements IDepartmentDao{
         // logger departments
         logger.info("finish getDepartments %v", departments);
         return departments;
+    }
+
+    @Override
+    public Department getById(long id) {
+        return IDepartmentDao.super.getById(id);
+    }
+
+    @Override
+    public boolean delete(Department department) {
+        return false;
+    }
+
+    @Override
+    public Department getDepartmentEagerBy(Long id) {
+        return null;
     }
 }

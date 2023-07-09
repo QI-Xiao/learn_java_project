@@ -1,18 +1,35 @@
 package org.example.model;
 
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
+@Entity
+@Table(name = "employees")
 public class Employee {
     public Employee() {}
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private long id;
+    @Column
     private String name;
+    @Column
     private String first_name;
+    @Column
     private String last_name;
+    @Column
     private String email;
+    @Column
     private String address;
-    private Date hired_date;
-    private long department_id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE)
+    private Set<Account> accounts;
 
     public void setId(long id) {
         this.id = id;
@@ -38,11 +55,11 @@ public class Employee {
         this.address = address;
     }
 
-    public void setHired_date(Date hired_date) {
-        this.hired_date = hired_date;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
-    public void setDepartment_id(long department_id) {
-        this.department_id = department_id;
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
 }

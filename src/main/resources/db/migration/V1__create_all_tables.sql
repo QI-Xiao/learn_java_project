@@ -14,7 +14,7 @@ CREATE TABLE employees (
                            email           VARCHAR(50),
                            address         VARCHAR(150),
                            hired_date      date default CURRENT_DATE,
-                           department_id   BIGSERIAL NOT NULL
+                           department_id   BIGINT NOT NULL
 );
 ALTER TABLE employees ADD CONSTRAINT employee_pk PRIMARY KEY ( id );
 
@@ -23,7 +23,7 @@ CREATE TABLE accounts (
                           account_type   VARCHAR(30),
                           balance        NUMERIC(10, 2),
                           create_date    date default CURRENT_DATE,
-                          employee_id    INTEGER NOT NULL
+                          employee_id    BIGINT NOT NULL
 );
 ALTER TABLE accounts ADD CONSTRAINT account_pk PRIMARY KEY ( id );
 

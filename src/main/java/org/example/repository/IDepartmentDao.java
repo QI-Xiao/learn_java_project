@@ -5,7 +5,17 @@ import org.example.model.Department;
 import java.util.List;
 
 public interface IDepartmentDao {
-    public default List<Department> getDepartments() {
+    void save(Department department);
+
+    default List<Department> getDepartments() {
         return null;
     }
+
+    default Department getById(long id) {
+        return null;
+    }
+
+    boolean delete(Department department);
+
+    Department getDepartmentEagerBy(Long id);
 }
