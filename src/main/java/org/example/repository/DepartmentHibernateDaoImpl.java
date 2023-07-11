@@ -40,9 +40,8 @@ public class DepartmentHibernateDaoImpl implements IDepartmentDao {
         List<Department> departments = new ArrayList<>();
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
+        Session session = sessionFactory.openSession();
         try {
-            Session session = sessionFactory.openSession();
-
             String hql = "from Department";
             Query<Department> query = session.createQuery(hql);
 
@@ -50,7 +49,9 @@ public class DepartmentHibernateDaoImpl implements IDepartmentDao {
 
             session.close();
         } catch (HibernateException e) {
-            logger.error("open seesion error", e);
+            logger.error("open session error", e);
+            throw e;
+//            session.close();
         }
 
         logger.info("set department {}", departments);

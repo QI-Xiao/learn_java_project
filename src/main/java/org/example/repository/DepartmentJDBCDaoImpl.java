@@ -56,11 +56,11 @@ public class DepartmentJDBCDaoImpl implements IDepartmentDao{
                 String description = rs.getString("description");
                 String location = rs.getString("location");
 
-                Department department = new Department();
-                department.setId(id);
-                department.setName(name);
-                department.setDescription(description);
-                department.setLocation(location);
+                Department department = new Department(id, name, description, location);
+//                department.setId(id);
+//                department.setName(name);
+//                department.setDescription(description);
+//                department.setLocation(location);
                 departments.add(department);
             }
 
