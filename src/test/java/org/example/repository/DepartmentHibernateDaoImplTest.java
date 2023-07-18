@@ -1,17 +1,26 @@
 package org.example.repository;
 
+import org.example.ApplicationBootstrap;
 import org.example.model.Department;
 import org.example.model.Employee;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static junit.framework.Assert.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ApplicationBootstrap.class)
 public class DepartmentHibernateDaoImplTest {
-    private DepartmentHibernateDaoImpl departmentHibernateDao;
+    @Autowired
+    private IDepartmentDao departmentHibernateDao;
 
-    private EmployeeHibernateDaoImpl employeeHibernateDao;
+    @Autowired
+    private IEmployeeDao employeeHibernateDao;
 
     private Department d1;
 
@@ -20,14 +29,14 @@ public class DepartmentHibernateDaoImplTest {
 
     @Before
     public void setUp() {
-        departmentHibernateDao = new DepartmentHibernateDaoImpl();
+//        departmentHibernateDao = new DepartmentHibernateDaoImpl();
         d1 = new Department();
         d1.setName("hr333");
         d1.setDescription("random description");
         d1.setLocation("US");
         departmentHibernateDao.save(d1);
 
-        employeeHibernateDao = new EmployeeHibernateDaoImpl();
+//        employeeHibernateDao = new EmployeeHibernateDaoImpl();
 
         e1 = new Employee();
         e1.setName("zhang12333");

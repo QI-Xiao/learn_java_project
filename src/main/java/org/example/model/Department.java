@@ -1,5 +1,7 @@
 package org.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ public class Department {
     private String location;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private Set<Employee> employees;
 
     public Department() {

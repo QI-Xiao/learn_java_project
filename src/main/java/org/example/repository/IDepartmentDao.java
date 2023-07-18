@@ -18,4 +18,6 @@ public interface IDepartmentDao {
     boolean delete(Department department);
 
     Department getDepartmentEagerBy(Long id);
+
+    Department update(Department d);
 }

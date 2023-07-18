@@ -6,20 +6,25 @@ import org.example.util.HibernateUtil;
 import org.hibernate.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class DepartmentHibernateDaoImpl implements IDepartmentDao {
 
     private static final Logger logger = LoggerFactory.getLogger(DepartmentHibernateDaoImpl.class);
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Override
     public void save(Department department) {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Transaction transaction = null;
+        Session session = sessionFactory.openSession();
         try {
-            Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(department);
             transaction.commit();
@@ -30,6 +35,7 @@ public class DepartmentHibernateDaoImpl implements IDepartmentDao {
                 transaction.rollback();
             }
             logger.error("create error", e);
+            session.close();
         }
     }
 
@@ -38,7 +44,7 @@ public class DepartmentHibernateDaoImpl implements IDepartmentDao {
         logger.info("Start getDepartments from postgres via hibernate");
 
         List<Department> departments = new ArrayList<>();
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+//        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
         Session session = sessionFactory.openSession();
         try {
@@ -60,7 +66,20 @@ public class DepartmentHibernateDaoImpl implements IDepartmentDao {
 
     @Override
     public Department getById(long id) {
-        return IDepartmentDao.super.getById(id);
+        Session session = sessionFactory.openSession();
+        String hql = "FROM Department d where id= :Id";
+
+        try {
+            Query<Department> query = session.createQuery(hql);
+            query.setParameter("Id", id);
+            Department result = query.uniqueResult();
+            session.close();
+            return result;
+        } catch (HibernateException e) {
+            logger.error("Session exception", e);
+            session.close();
+            return null;
+        }
     }
 
     @Override
@@ -100,5 +119,27 @@ public class DepartmentHibernateDaoImpl implements IDepartmentDao {
             session.close();
             return null;
         }
+    }
+
+    @Override
+    public Department update(Department department) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(department);
+            transaction.commit();
+            Department d = getById(department.getId());
+            session.close();
+            return d;
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error("failed", e);
+            session.close();
+            return null;
+        }
+
     }
 }

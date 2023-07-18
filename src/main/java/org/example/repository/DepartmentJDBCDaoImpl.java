@@ -97,4 +97,9 @@ public class DepartmentJDBCDaoImpl implements IDepartmentDao{
     public Department getDepartmentEagerBy(Long id) {
         return null;
     }
+
+    @Override
+    public Department update(Department d) {
+        return null;
+    }
 }
