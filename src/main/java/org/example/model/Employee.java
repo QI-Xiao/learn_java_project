@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -25,6 +26,10 @@ public class Employee {
     private String email;
     @Column
     private String address;
+
+    public Department getDepartment() {
+        return department;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
@@ -64,5 +69,26 @@ public class Employee {
 
     public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, first_name, last_name, email, address);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Employee employee = (Employee) o;
+
+        return id == employee.id &&
+                Objects.equals(name, employee.name) &&
+                Objects.equals(first_name, employee.first_name) &&
+                Objects.equals(last_name, employee.last_name) &&
+                Objects.equals(email, employee.email) &&
+                Objects.equals(address, employee.address);
     }
 }

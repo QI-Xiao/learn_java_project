@@ -32,11 +32,18 @@ public class DepartmentController {
         return departmentService.getById(id);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH, params = {"name"})
-    public Department updateDepartmentName(@PathVariable("id") Long id, @RequestParam("name") String name) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+    public Department updateDepartmentName(@PathVariable("id") Long id, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "description", required = false) String description) {
         logger.info("patch id by {}", id, name);
         Department d = departmentService.getById(id);
-        d.setName(name);
+
+        if (name != null) {
+            d.setName(name);
+        }
+        if (description != null) {
+            d.setDescription(description);
+        }
+
         d = departmentService.update(d);
         return d;
     }
