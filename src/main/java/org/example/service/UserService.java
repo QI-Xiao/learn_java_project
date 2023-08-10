@@ -23,4 +23,8 @@ public class UserService {
     public User getUserBYCredentials(String email, String password) throws Exception {
         return userDao.getUserByCredentials(email, password);
     }
+
+    public User getById(Long id) {
+        return userDao.getById(id);
+    }
 }

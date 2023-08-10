@@ -82,4 +82,22 @@ public class UserHibernateDaoImpl implements IUserDao {
             throw new UserNotFoundException("can't find user record with email=" + email + ", password=" + password);
         }
     }
+
+    @Override
+    public User getById(long id) {
+        Session session = sessionFactory.openSession();
+        String hql = "FROM User u where id= :Id";
+
+        try {
+            Query<User> query = session.createQuery(hql);
+            query.setParameter("Id", id);
+            User result = query.uniqueResult();
+            session.close();
+            return result;
+        } catch (HibernateException e) {
+            logger.error("Session exception", e);
+            session.close();
+            return null;
+        }
+    }
 }

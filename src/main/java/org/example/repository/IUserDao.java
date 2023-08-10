@@ -11,4 +11,6 @@ public interface IUserDao {
     User save(User user);
 
     User getUserByCredentials(String emailOrUsername, String password) throws Exception;
+
+    User getById(long id);
 }
