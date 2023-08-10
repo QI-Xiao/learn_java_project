@@ -21,9 +21,11 @@ import java.util.Set;
 public class SecurityFilter implements Filter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JWTService jwtService;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private UserService userService;
 
@@ -61,6 +63,8 @@ public class SecurityFilter implements Filter {
             return HttpServletResponse.SC_ACCEPTED;
         }
 
+        String verb = req.getMethod();
+
         try {
             String token = req.getHeader("Authorization").replaceAll("^(.*?)", "");
             if (token == null || token.isEmpty()) {
@@ -71,14 +75,42 @@ public class SecurityFilter implements Filter {
 
             if (claims.getId() != null) {
                 User user = userService.getById(Long.valueOf(claims.getId()));
-                if (user != null) {
+                if (user == null) {
+                    return statusCode;
+                }
+            }
+
+            logger.info("claims {}", claims);
+
+            String allowedResources = "";
+            switch (verb) {
+                case "POST": allowedResources = (String) claims.get("allowedCreateResources"); break;
+                case "PUT":
+                case "PATCH":
+                    allowedResources = (String) claims.get("allowedUpdateResources"); break;
+                case "DELETE": allowedResources = (String) claims.get("allowedDeleteResources"); break;
+                case "GET":
+                default: allowedResources = (String) claims.get("allowedResources"); break;
+            }
+
+            logger.info("verb {}", verb);
+            logger.info("method {}", allowedResources);
+            logger.info("url {}", url);
+
+            for(String s : allowedResources.split(",")) {
+                String url_trim = url.trim().toLowerCase();
+                String s_trim = s.trim().toLowerCase();
+                logger.info("url - {}; s - {}; {} - {}", url_trim, "\"" + s_trim + "\"", url_trim.startsWith(s_trim), !s_trim.equals(""));
+                if(!s_trim.equals("") && url_trim.startsWith(s_trim)) {
                     statusCode = HttpServletResponse.SC_ACCEPTED;
+                    logger.info("change the statusCode {}", statusCode);
+                    break;
                 }
             }
         } catch (Exception e) {
             logger.info("can't get token");
         }
+        logger.info("the statusCode {}", statusCode);
         return statusCode;
-
     }
 }
