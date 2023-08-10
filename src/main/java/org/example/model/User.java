@@ -1,10 +1,13 @@
 package org.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +51,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = DigestUtils.md5Hex(password.trim());
     }
 
     public String getSecretKey() {

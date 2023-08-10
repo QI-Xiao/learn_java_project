@@ -1,6 +1,7 @@
-package org.example.repository;
+package org.example.repository.JDBC_old;
 
 import org.example.model.Department;
+import org.example.repository.IDepartmentDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DepartmentJDBCDaoImpl implements IDepartmentDao{
+public class DepartmentJDBCDaoImpl implements IDepartmentDao {
     static final String DB_URL = "jdbc:postgresql://localhost:5431/training_db";
     static final String USER = "admin";
     static final String PASS = "Training123!";

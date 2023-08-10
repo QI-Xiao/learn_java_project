@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = {"/department", "/dept"})
 public class DepartmentController {
-    private final Logger logger = LoggerFactory.getLogger(DepartmentHibernateDaoImpl .class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private DepartmentService departmentService;

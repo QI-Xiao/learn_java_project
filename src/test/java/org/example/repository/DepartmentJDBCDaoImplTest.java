@@ -1,6 +1,7 @@
 package org.example.repository;
 
 
+import org.example.repository.JDBC_old.DepartmentJDBCDaoImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

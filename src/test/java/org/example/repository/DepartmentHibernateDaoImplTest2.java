@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class DepartmentHibernateDaoImplTest2 {
 
-    @Mock
+    @MockBean
     private SessionFactory mockSessionFactory;
 
     @Mock
@@ -46,7 +47,7 @@ public class DepartmentHibernateDaoImplTest2 {
         List<Department> result = List.of(department);
 
         try (MockedStatic mockedStatic = mockStatic(HibernateUtil.class)) {
-            mockedStatic.when(HibernateUtil::getSessionFactory).thenReturn(mockSessionFactory);
+//            mockedStatic.when(HibernateUtil::getSessionFactory).thenReturn(mockSessionFactory);
 
             when(mockSessionFactory.openSession()).thenReturn(mockSession);
             when(mockSession.createQuery(any(String.class))).thenReturn(mockQuery);
