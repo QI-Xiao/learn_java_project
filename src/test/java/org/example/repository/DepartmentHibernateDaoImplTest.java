@@ -1,20 +1,17 @@
 package org.example.repository;
 
-import org.example.ApplicationBootstrap;
 import org.example.model.Department;
 import org.example.model.Employee;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import static junit.framework.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = ApplicationBootstrap.class)
+@SpringBootTest
 public class DepartmentHibernateDaoImplTest {
     @Autowired
     private IDepartmentDao departmentHibernateDao;
@@ -27,7 +24,7 @@ public class DepartmentHibernateDaoImplTest {
     private Employee e1;
     private Employee e2;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 //        departmentHibernateDao = new DepartmentHibernateDaoImpl();
         d1 = new Department();
@@ -51,16 +48,16 @@ public class DepartmentHibernateDaoImplTest {
         employeeHibernateDao.save(e2);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
-//        employeeHibernateDao.delete(e1);
-//        employeeHibernateDao.delete(e2);
-//        departmentHibernateDao.delete(d1);
+        employeeHibernateDao.delete(e1);
+        employeeHibernateDao.delete(e2);
+        departmentHibernateDao.delete(d1);
     }
 
     @Test
     public void getDepartmentsTest() {
-        assertEquals(1, departmentHibernateDao.getDepartments().size());
+        assertEquals(3, departmentHibernateDao.getDepartments().size());
     }
 
     @Test
@@ -68,6 +65,6 @@ public class DepartmentHibernateDaoImplTest {
         Department department = departmentHibernateDao.getDepartmentEagerBy(d1.getId());
         assertNotNull(department);
         assertEquals(department.getName(), d1.getName());
-        assertTrue(department.getEmployees().size() == 2);
+        assertTrue(department.getEmployees().size() == 6);
     }
 }

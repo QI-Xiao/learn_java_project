@@ -1,19 +1,21 @@
 package org.example.repository;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import static junit.framework.Assert.assertEquals;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DepartmentJDBCDaoImplTest {
     DepartmentJDBCDaoImpl departmentJDBCDaoImpl;
 
-    @Before
+    @BeforeEach
     public void setup() {
         departmentJDBCDaoImpl = new DepartmentJDBCDaoImpl();
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         departmentJDBCDaoImpl = null;
     }
